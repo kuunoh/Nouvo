@@ -1,0 +1,12 @@
+"New" = "New";
+"New file" = "New file";
+"Text document" = "Text document";
+"Word document" = "Word document";
+"Excel workbook" = "Excel workbook";
+"CSV file" = "CSV file";
+"Markdown" = "Markdown";
+"Rich text" = "Rich text";
+"JSON" = "JSON";
+"Nouvo is installed" = "Nouvo is installed";
+"Help" = "Right-click in any Finder folder → “New”.\n\nMenu not showing? System Settings → General → Login Items & Extensions → Finder Extensions → enable “Nouvo”.";
+"Couldn't create the file" = "Couldn't create the file";

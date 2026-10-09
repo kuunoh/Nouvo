@@ -1,10 +1,11 @@
 import Cocoa
 
-// App hôte invisible : reçoit nouvo://create?dir=…&ext=… de l'extension Finder,
-// crée le fichier puis le sélectionne dans le Finder.
+// Hidden host app: receives nouvo://create?dir=…&ext=… from the Finder extension,
+// creates the file, then selects it in Finder.
 
-// Whitelist : n'importe quelle app peut ouvrir une URL nouvo://, on n'accepte donc que ces extensions.
+// Whitelist: any app can open a nouvo:// URL, so only these extensions are accepted.
 private let allowed: Set = ["txt", "docx", "xlsx", "csv", "md", "rtf", "json"]
+private func L(_ key: String) -> String { NSLocalizedString(key, comment: "") }
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var viaURL = false
@@ -16,9 +17,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_: Notification) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            guard !self.viaURL else { return } // lancée à la main : petit mode d'emploi
+            guard !self.viaURL else { return } // launched manually: show quick help
             NSApp.activate(ignoringOtherApps: true)
-            self.alert("Nouvo est installé", "Clic droit dans un dossier du Finder → « Nouveau ».\n\nSi le menu n'apparaît pas : Réglages Système → Général → Éléments de connexion et extensions → Extensions du Finder → active « Nouvo ».")
+            self.alert(L("Nouvo is installed"), L("Help"))
             NSApp.terminate(nil)
         }
     }
@@ -36,7 +37,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             NSWorkspace.shared.activateFileViewerSelecting([try create(in: URL(fileURLWithPath: dir), ext: ext)])
         } catch {
             NSApp.activate(ignoringOtherApps: true)
-            alert("Impossible de créer le fichier", error.localizedDescription)
+            alert(L("Couldn't create the file"), error.localizedDescription)
         }
     }
 
@@ -44,8 +45,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let data = try Bundle.main.url(forResource: "template", withExtension: ext, subdirectory: "Templates")
             .map { try Data(contentsOf: $0) } ?? Data()
         for n in 1... {
-            let url = dir.appendingPathComponent("Nouveau fichier\(n > 1 ? " \(n)" : "").\(ext)")
-            do { try data.write(to: url, options: .withoutOverwriting); return url } // création atomique, jamais d'écrasement
+            let url = dir.appendingPathComponent("\(L("New file"))\(n > 1 ? " \(n)" : "").\(ext)")
+            do { try data.write(to: url, options: .withoutOverwriting); return url } // atomic, never overwrites
             catch CocoaError.fileWriteFileExists {}
         }
         fatalError()

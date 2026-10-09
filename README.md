@@ -12,13 +12,12 @@
 
 ## Features
 
-Right-click in any Finder folder, even an empty one → **Nouveau** → `.txt` `.docx` `.xlsx` `.csv` `.md` `.rtf` `.json`
+Right-click in any Finder folder, even an empty one → **New** → `.txt` `.docx` `.xlsx` `.csv` `.md` `.rtf` `.json`
 
 - The file is created and selected, ready to rename.
-- No overwrite: `Nouveau fichier 2.txt`, `3`…
+- No overwrite: `New file 2.txt`, `3`…
 - `.docx` and `.xlsx` are real Office documents, not 0-byte files.
-
-> The UI is in French ("Nouveau" = "New").
+- Follows the system language: 🇬🇧 English, 🇫🇷 French, 🇩🇪 German.
 
 ## Install
 
@@ -35,7 +34,7 @@ To uninstall: `./uninstall.sh`
 
 ## Add a file type
 
-1. Add it to `types` ([`FinderSync.swift`](Sources/Extension/FinderSync.swift)) and `allowed` ([`main.swift`](Sources/App/main.swift)).
+1. Add it to `types` ([`FinderSync.swift`](Sources/Extension/FinderSync.swift)) and `allowed` ([`main.swift`](Sources/App/main.swift)), and translate its title in [`Support/Localization`](Support/Localization).
 2. *(Optional)* Add a template in `build.sh`.
 3. Run `./build.sh` again.
 

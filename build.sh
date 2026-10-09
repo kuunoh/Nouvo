@@ -1,5 +1,5 @@
 #!/bin/zsh
-# Compile Nouvo.app (+ extension Finder), l'installe dans ~/Applications et l'active.
+# Builds Nouvo.app (+ Finder extension), installs it to ~/Applications and enables it.
 set -euo pipefail
 cd "${0:A:h}"
 
@@ -12,19 +12,22 @@ TARGET="$(uname -m)-apple-macos13.0"
 rm -rf "$BUILD"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources/Templates" "$EXT/Contents/MacOS"
 
-echo "→ Compilation de l'app"
+echo "→ Building app"
 swiftc -O -target "$TARGET" -module-name Nouvo \
   Sources/App/main.swift -o "$APP/Contents/MacOS/Nouvo"
 
-echo "→ Compilation de l'extension Finder"
+echo "→ Building Finder extension"
 swiftc -O -target "$TARGET" -module-name NouvoExtension -parse-as-library -application-extension \
   -framework FinderSync -Xlinker -e -Xlinker _NSExtensionMain \
   Sources/Extension/FinderSync.swift -o "$EXT/Contents/MacOS/NouvoExtension"
 
 cp Support/App-Info.plist "$APP/Contents/Info.plist"
 cp Support/Ext-Info.plist "$EXT/Contents/Info.plist"
+mkdir -p "$EXT/Contents/Resources"
+cp -R Support/Localization/*.lproj "$APP/Contents/Resources/"
+cp -R Support/Localization/*.lproj "$EXT/Contents/Resources/"
 
-echo "→ Génération des modèles"
+echo "→ Generating templates"
 T="$APP/Contents/Resources/Templates"
 print -n "" | textutil -stdin -format txt -convert docx -output "$T/template.docx"
 print -n "" | textutil -stdin -format txt -convert rtf  -output "$T/template.rtf"
@@ -43,11 +46,11 @@ with zipfile.ZipFile(sys.argv[1], "w", zipfile.ZIP_DEFLATED) as z:
         z.writestr(name, data)
 PY
 
-echo "→ Signature (ad-hoc)"
+echo "→ Signing (ad-hoc)"
 codesign --force --sign - --entitlements Support/Ext.entitlements "$EXT"
 codesign --force --sign - "$APP"
 
-echo "→ Installation dans $INSTALL_DIR"
+echo "→ Installing to $INSTALL_DIR"
 mkdir -p "$INSTALL_DIR"
 pluginkit -r "$INSTALL_DIR/Nouvo.app/Contents/PlugIns/NouvoExtension.appex" 2>/dev/null || true
 rm -rf "$INSTALL_DIR/Nouvo.app"
@@ -56,7 +59,7 @@ cp -R "$APP" "$INSTALL_DIR/"
 pluginkit -a "$INSTALL_DIR/Nouvo.app/Contents/PlugIns/NouvoExtension.appex"
 sleep 1 && pluginkit -e use -i io.github.kuunoh.Nouvo.FinderExtension
 
-echo "→ Redémarrage du Finder"
+echo "→ Restarting Finder"
 killall Finder || true
 
-echo "✓ Terminé. Clic droit dans un dossier → « Nouveau »."
+echo "✓ Done. Right-click in any Finder folder → New."

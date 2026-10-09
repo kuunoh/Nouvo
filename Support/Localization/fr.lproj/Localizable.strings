@@ -1,0 +1,12 @@
+"New" = "Nouveau";
+"New file" = "Nouveau fichier";
+"Text document" = "Document texte";
+"Word document" = "Document Word";
+"Excel workbook" = "Classeur Excel";
+"CSV file" = "Fichier CSV";
+"Markdown" = "Markdown";
+"Rich text" = "Texte enrichi";
+"JSON" = "JSON";
+"Nouvo is installed" = "Nouvo est installé";
+"Help" = "Clic droit dans un dossier du Finder → « Nouveau ».\n\nLe menu n'apparaît pas ? Réglages Système → Général → Éléments de connexion et extensions → Extensions du Finder → active « Nouvo ».";
+"Couldn't create the file" = "Impossible de créer le fichier";
