@@ -2,7 +2,7 @@
 
 # 📄 Nouvo
 
-**Le « Clic droit → Nouveau » de Windows, enfin sur macOS.**
+**Le « Clic droit → Nouveau » de Windows, sur macOS.**
 
 Crée un fichier vide en un clic droit dans n'importe quel dossier du Finder, même un dossier vide.
 
