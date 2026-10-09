@@ -2,7 +2,7 @@
 
 # 📄 Nouvo
 
-**Le « Clic droit → Nouveau » de Windows, sur macOS.**
+**Windows' "Right-click → New", on macOS.**
 
 ![macOS](https://img.shields.io/badge/macOS-13%2B-black?logo=apple)
 ![Swift](https://img.shields.io/badge/Swift-5.9%2B-F05138?logo=swift&logoColor=white)
@@ -12,36 +12,38 @@
 
 ## Features
 
-Clic droit dans n'importe quel dossier du Finder, même vide → **Nouveau** → `.txt` `.docx` `.xlsx` `.csv` `.md` `.rtf` `.json`
+Right-click in any Finder folder, even an empty one → **Nouveau** → `.txt` `.docx` `.xlsx` `.csv` `.md` `.rtf` `.json`
 
-- Le fichier est créé puis sélectionné, prêt à être renommé.
-- Pas d'overwrite : `Nouveau fichier 2.txt`, `3`…
-- Les `.docx` et `.xlsx` sont de vrais documents Office, pas des fichiers de 0 octet.
+- The file is created and selected, ready to rename.
+- No overwrite: `Nouveau fichier 2.txt`, `3`…
+- `.docx` and `.xlsx` are real Office documents, not 0-byte files.
+
+> The UI is in French ("Nouveau" = "New").
 
 ## Install
 
-Prérequis : macOS 13+ et les Command Line Tools (`xcode-select --install`). Xcode n'est pas nécessaire.
+Requirements: macOS 13+ and the Command Line Tools (`xcode-select --install`). No Xcode needed.
 
 ```bash
 git clone https://github.com/kuunoh/Nouvo.git && cd Nouvo && ./build.sh
 ```
 
 > [!TIP]
-> Si le menu n'apparaît pas, va dans **Réglages Système → Général → Éléments de connexion et extensions → Extensions du Finder** et active **Nouvo**.
+> Menu not showing? Go to **System Settings → General → Login Items & Extensions → Finder Extensions** and enable **Nouvo**.
 
-Pour désinstaller : `./uninstall.sh`
+To uninstall: `./uninstall.sh`
 
-## Ajouter un type de fichier
+## Add a file type
 
-1. Ajoute-le dans `types` ([`FinderSync.swift`](Sources/Extension/FinderSync.swift)) et dans `allowed` ([`main.swift`](Sources/App/main.swift)).
-2. *(Optionnel)* Ajoute un template dans `build.sh`.
-3. Relance `./build.sh`.
+1. Add it to `types` ([`FinderSync.swift`](Sources/Extension/FinderSync.swift)) and `allowed` ([`main.swift`](Sources/App/main.swift)).
+2. *(Optional)* Add a template in `build.sh`.
+3. Run `./build.sh` again.
 
 ## Under the hood
 
-Une Finder Sync extension (sandboxée) affiche le menu et envoie un `nouvo://create?dir=…&ext=…` à une app helper invisible, qui crée le fichier.
+A sandboxed Finder Sync extension shows the menu and sends `nouvo://create?dir=…&ext=…` to a hidden helper app, which creates the file.
 
-**Security :** les extensions de fichier sont filtrées par une whitelist, le dossier cible doit exister, l'écriture est atomique et sans overwrite, et il n'y a aucun accès réseau.
+**Security:** file extensions are whitelisted, the target folder must exist, writes are atomic with no overwrite, and there's no network access.
 
 ## License
 
