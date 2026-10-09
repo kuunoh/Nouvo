@@ -3,7 +3,7 @@ import Cocoa
 // App hôte invisible : reçoit nouvo://create?dir=…&ext=… de l'extension Finder,
 // crée le fichier puis le sélectionne dans le Finder.
 
-// Liste blanche : n'importe quelle app peut ouvrir une URL nouvo://, on n'accepte donc que ces extensions.
+// Whitelist : n'importe quelle app peut ouvrir une URL nouvo://, on n'accepte donc que ces extensions.
 private let allowed: Set = ["txt", "docx", "xlsx", "csv", "md", "rtf", "json"]
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
